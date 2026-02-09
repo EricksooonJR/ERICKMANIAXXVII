@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ERICKMANÍA XXVII</title>
+
+    <!-- Tipografías (puedes cambiar/añadir) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bangers&family=Luckiest+Guy&family=Oswald:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tu CSS -->
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body class="preload">
+    <div class="wrap">
+      <article
+        class="poster"
+        id="poster"
+        aria-label="Cartel estilo lucha libre"
+      >
+        <div class="inner">
+          <div class="topline">
+            <span class="star">★</span>
+            <span class="small">Gran fiesta de cumpleaños</span>
+            <span class="star">★</span>
+          </div>
+
+          <section class="hero">
+            <h1 class="titleNeon">
+              ERICKMANÍA <span class="heroNum">XXVII</span>
+            </h1>
+            <div class="sub">
+              <span class="pill"
+                ><span class="dot"></span> Temática: <b>Lucha Libre</b></span
+              >
+              <span class="pill"
+                ><span class="dot"></span> Sábado <b>6 de junio</b> ·
+                <b>19:00 hrs</b></span
+              >
+            </div>
+          </section>
+
+          <div class="grid">
+            <!-- LUCHA ESTELAR -->
+            <section class="card">
+              <div class="bar">
+                <span>Lucha estelar</span>
+                <span class="badge">¡Choque de leyendas!</span>
+              </div>
+              <div class="match">
+                <div class="versus fighters" data-match="estelar">
+                  <div class="team left">
+                    <div class="fighterGrid" data-side="left"></div>
+                  </div>
+
+                  <div class="vs">VS</div>
+
+                  <div class="team right">
+                    <div class="fighterGrid" data-side="right"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- SEMIFINAL -->
+            <section class="card">
+              <div class="bar">
+                <span>Semifinal</span>
+                <span class="badge">2 vs 2</span>
+              </div>
+              <div class="match">
+                <div class="versus fighters" data-match="semifinal">
+                  <div class="team left">
+                    <div class="fighterGrid" data-side="left"></div>
+                  </div>
+
+                  <div class="vs">VS</div>
+
+                  <div class="team right">
+                    <div class="fighterGrid" data-side="right"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- SEGUNDA -->
+            <section class="card">
+              <div class="bar">
+                <span>Segunda lucha</span>
+                <span class="badge">Mano a mano</span>
+              </div>
+              <div class="match">
+                <div class="versus fighters" data-match="segunda">
+                  <div class="team left">
+                    <div class="fighterGrid" data-side="left"></div>
+                  </div>
+
+                  <div class="vs">VS</div>
+
+                  <div class="team right">
+                    <div class="fighterGrid" data-side="right"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- PRIMERA -->
+            <section class="card">
+              <div class="bar">
+                <span>Primera lucha</span>
+                <span class="badge">¡Arranque explosivo!</span>
+              </div>
+              <div class="match">
+                <div class="versus fighters" data-match="primera">
+                  <div class="team left">
+                    <div class="fighterGrid" data-side="left"></div>
+                  </div>
+
+                  <div class="vs">VS</div>
+
+                  <div class="team right">
+                    <div class="fighterGrid" data-side="right"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- CUENTA REGRESIVA -->
+            <section
+              class="card countdownCard"
+              aria-label="Cuenta regresiva para el evento"
+            >
+              <div class="bar">
+                <span>La campana suena en</span>
+                <span class="badge">¡Cuenta regresiva!</span>
+              </div>
+              <div class="countdown" id="countdown">
+                <div class="timeBox">
+                  <span class="num" id="cdDays">00</span>
+                  <span class="lbl">DÍAS</span>
+                </div>
+                <div class="sep">:</div>
+                <div class="timeBox">
+                  <span class="num" id="cdHours">00</span>
+                  <span class="lbl">HORAS</span>
+                </div>
+                <div class="sep">:</div>
+                <div class="timeBox">
+                  <span class="num" id="cdMinutes">00</span>
+                  <span class="lbl">MIN</span>
+                </div>
+                <div class="sep">:</div>
+                <div class="timeBox">
+                  <span class="num" id="cdSeconds">00</span>
+                  <span class="lbl">SEG</span>
+                </div>
+              </div>
+              <div class="countdownNote">
+                ⏰ Llegar 15 minutos antes para no perderte la entrada estelar
+              </div>
+            </section>
+
+            <!-- DETALLES -->
+            <section class="card" style="grid-column: 1 / -1">
+              <div class="bar">
+                <span>Detalles</span>
+                <span class="badge">¡No faltes!</span>
+              </div>
+              <div class="info">
+                <div class="infoRow">
+                  <div class="label">Lugar</div>
+                  <div class="value">
+                    <span class="valueText">
+                      4ta Privada de Juárez Norte 2455 #12, San Nicolás
+                      Tetitzintla
+                    </span>
+                    <div class="actions">
+                      <a
+                        class="actionBtn map"
+                        href="https://maps.app.goo.gl/HdLXEaerf2JJ2V9y8"
+                        target="_blank"
+                        rel="noopener"
+                        aria-label="Abrir ubicación en Google Maps"
+                      >
+                        📍 Ver ubicación
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="infoRow">
+                  <div class="label">Hora</div>
+                  <div class="value">19:00 hrs</div>
+                </div>
+                <div class="infoRow">
+                  <div class="label">Fecha</div>
+                  <div class="value">Sábado 6 de junio</div>
+                </div>
+                <div class="infoRow">
+                  <div class="label">Mesa de regalos</div>
+                  <div class="value">
+                    <div class="actions">
+                      <a
+                        class="actionBtn gifts"
+                        href="#"
+                        target="_blank"
+                        rel="noopener"
+                        aria-label="Abrir mesa de regalos en Liverpool"
+                      >
+                        🎁 Ver mesa Liverpool
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="tagline">
+                  Código de vestimenta: <b>Máscara obligatoria</b>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="footerBar">
+            <span>Referee: <span class="refTag">EL RUDO</span></span>
+            <span class="maskCode"
+              >CÓDIGO DE VESTIMENTA: <b>MÁSCARA OBLIGATORIA</b></span
+            >
+            <span>Entrada libre · Solo trae ganas de festejar</span>
+          </div>
+        </div>
+      </article>
+    </div>
+    <!-- ===== Reproductor flotante ===== -->
+    <div
+      id="player"
+      class="player hidden"
+      role="region"
+      aria-label="Reproductor de música"
+    >
+      <button
+        id="playerToggle"
+        class="pbtn"
+        type="button"
+        aria-label="Reproducir / pausar"
+      >
+        ▶
+      </button>
+
+      <div class="pmeta">
+        <div class="ptitle">Sonora Santanera · Luchadores</div>
+        <div class="prow">
+          <span id="pTime" class="ptime">0:00</span>
+          <input
+            id="pSeek"
+            class="pseek"
+            type="range"
+            min="0"
+            max="100"
+            value="0"
+            step="0.1"
+            aria-label="Progreso"
+          />
+          <span id="pDur" class="ptime">0:00</span>
+        </div>
+      </div>
+
+      <button
+        id="playerMute"
+        class="pbtn"
+        type="button"
+        aria-label="Silenciar / activar sonido"
+      >
+        🔊
+      </button>
+      <input
+        id="pVol"
+        class="pvol"
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.85"
+        aria-label="Volumen"
+      />
+      <button
+        id="playerClose"
+        class="pbtn"
+        type="button"
+        aria-label="Ocultar reproductor"
+      >
+        ✕
+      </button>
+
+      <audio id="music" preload="auto" loop>
+        <source src="assets/luchadores.mp3" type="audio/mpeg" />
+      </audio>
+    </div>
+
+    <!-- Para descargar como PNG usamos html2canvas desde CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <!-- Tu JS -->
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -444,34 +444,33 @@ body::before{
   text-align: center;
 }
 
+.heroLogo{
+  width: min(300px, 90%);
+  height: auto;
+  display: block;
+  margin: 0 auto;
+
+  /* Se ve más grande sin cambiar el tamaño del contenedor (transform no afecta el layout) */
+  transform: scale(1.35);
+  transform-origin: 50% 60%;
+
+  /* Glow + sombra (base) */
+  filter:
+    drop-shadow(0 18px 34px rgba(0,0,0,.62))
+    drop-shadow(0 0 20px rgba(0,229,255,.22))
+    drop-shadow(0 0 18px rgba(255,0,168,.16));
+
+  /* Efecto: flotación + pulso de glow */
+  animation:
+    heroLogoFloat 2.8s ease-in-out infinite,
+    heroLogoGlow 1.6s ease-in-out infinite;
+
+  will-change: transform, filter;
+}
+
 .hero h1{
   margin:0;
-  text-transform: uppercase;
-  font-weight: 1000;
-  letter-spacing: 1px;
-  font-size: clamp(3.2rem, 6.5vw, 6rem);
-  line-height:1;
-  background: linear-gradient(180deg, #fff, #f2f2f2 25%, #a9a9a9 55%, #fff 85%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow:
-    0 0 10px rgba(0,229,255,.30),
-    0 0 16px rgba(255,0,168,.22),
-    0 6px 0 rgba(0,0,0,.60);
-  -webkit-text-stroke: 1px rgba(0,0,0,.65);
-  font-family: var(--font-title);
-}
-.heroNum{
-  background: linear-gradient(180deg, #ffe28b, #ffd24a, #b38300);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow:
-    0 0 12px rgba(255,210,74,.35),
-    0 6px 0 rgba(0,0,0,.55);
-  -webkit-text-stroke: 1px rgba(0,0,0,.65);
-  font-family: var(--font-title);
+  display:block;
 }
 
 .hero .sub{
@@ -991,7 +990,25 @@ body.intro .footerBar{ animation: itemIn 520ms ease-out 420ms forwards; }
   }
   92%{ transform: scale(.98) rotate(.6deg); }
 }
+@keyframes heroLogoFloat{
+  0%,100%{ transform: translateY(0) scale(1.55); }
+  50%{ transform: translateY(-6px) scale(1.38); }
+}
 
+@keyframes heroLogoGlow{
+  0%,100%{
+    filter:
+      drop-shadow(0 18px 34px rgba(0,0,0,.62))
+      drop-shadow(0 0 18px rgba(0,229,255,.18))
+      drop-shadow(0 0 16px rgba(255,0,168,.12));
+  }
+  50%{
+    filter:
+      drop-shadow(0 18px 34px rgba(0,0,0,.62))
+      drop-shadow(0 0 34px rgba(0,229,255,.38))
+      drop-shadow(0 0 28px rgba(255,0,168,.26));
+  }
+}
 
 @keyframes posterIn{
   0%   { opacity:0; transform: translateY(18px) scale(.985); filter: blur(6px); }
@@ -1044,6 +1061,7 @@ body.intro .footerBar{ animation: itemIn 520ms ease-out 420ms forwards; }
     animation: none !important;
   }
   .fighter .name{ animation: none !important; }
+    .heroLogo{ animation: none !important; }
 }
 
 /* ===== ANIMACIÓN TÍTULO: ERICKMANÍA XXVII (brillo + movimiento) ===== */
@@ -1052,113 +1070,8 @@ body.intro .footerBar{ animation: itemIn 520ms ease-out 420ms forwards; }
 .hero h1.titleNeon{
   position: relative;
   display: inline-block;
-  will-change: transform, filter, text-shadow;
-
-  /* Por defecto: loop agresivo */
-  animation:
-    titleFloat 1.85s ease-in-out infinite,
-    titleGlow 1.05s ease-in-out infinite,
-    titleFlicker 4.8s linear infinite;
 }
 
-/* Impacto SOLO al entrar (cuando body pasa a .intro) */
-body.intro .hero h1.titleNeon{
-  animation:
-    titleImpact 520ms cubic-bezier(.15,.95,.2,1) 1 both,
-    titleFloat 1.85s ease-in-out infinite 520ms,
-    titleGlow 1.05s ease-in-out infinite 520ms,
-    titleFlicker 4.8s linear infinite 520ms;
-}
-
-/* Brillo que “barre” el texto (shimmer) */
-.hero h1.titleNeon::after{
-  content: "";
-  position: absolute;
-  inset: -10px -24px;
-  pointer-events: none;
-
-  background: linear-gradient(110deg,
-    transparent 0%,
-    rgba(255,255,255,0) 35%,
-    rgba(255,255,255,.30) 48%,
-    rgba(255,255,255,0) 60%,
-    transparent 100%
-  );
-
-  transform: translateX(-65%) skewX(-14deg);
-  mix-blend-mode: screen;
-  opacity: .35;
-  filter: blur(1px);
-  animation: titleShimmer 2.8s ease-in-out infinite;
-}
-
-@keyframes titleFloat{
-  0%, 100%{ transform: translateY(0px) rotate(-.8deg) scale(1); }
-  35%{ transform: translateY(-7px) rotate(.9deg) scale(1.02); }
-  70%{ transform: translateY(2px) rotate(-.6deg) scale(.995); }
-}
-
-@keyframes titleGlow{
-  0%, 100%{
-    filter:
-      drop-shadow(0 0 16px rgba(0,229,255,.32))
-      drop-shadow(0 0 18px rgba(255,0,168,.22));
-
-    text-shadow:
-      0 0 14px rgba(0,229,255,.46),
-      0 0 22px rgba(255,0,168,.34),
-      0 8px 0 rgba(0,0,0,.62),
-      0 0 14px rgba(255,210,74,.22);
-  }
-  50%{
-    filter:
-      drop-shadow(0 0 28px rgba(0,229,255,.58))
-      drop-shadow(0 0 36px rgba(255,0,168,.42));
-
-    text-shadow:
-      0 0 20px rgba(0,229,255,.70),
-      0 0 38px rgba(255,0,168,.55),
-      0 8px 0 rgba(0,0,0,.62),
-      0 0 20px rgba(255,210,74,.30);
-  }
-}
-
-@keyframes titleShimmer{
-  0%{ transform: translateX(-65%) skewX(-14deg); opacity: .12; }
-  45%{ opacity: .30; }
-  60%{ opacity: .38; }
-  100%{ transform: translateX(75%) skewX(-14deg); opacity: .10; }
-}
-
-@keyframes titleFlicker{
-  0%, 86%, 100%{ opacity: 1; }
-  87%{ opacity: .78; }
-  88%{ opacity: 1; }
-  90%{ opacity: .82; }
-  91%{ opacity: 1; }
-  95%{ opacity: .88; }
-  96%{ opacity: 1; }
-}
-
-@keyframes titleImpact{
-  0%{
-    transform: translateY(14px) scale(.88) rotate(-2deg);
-    filter: blur(2px);
-    opacity: 0;
-  }
-  55%{
-    transform: translateY(-6px) scale(1.08) rotate(1.2deg);
-    filter: blur(0px);
-    opacity: 1;
-  }
-  75%{
-    transform: translateY(2px) scale(.98) rotate(-.8deg);
-  }
-  100%{
-    transform: translateY(0px) scale(1) rotate(0deg);
-    opacity: 1;
-  }
-}
 
 @media (prefers-reduced-motion: reduce){
   .hero h1.titleNeon,

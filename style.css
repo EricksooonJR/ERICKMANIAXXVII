@@ -41,6 +41,9 @@
   --fx-cd-pulse: 1.05s;
   --fx-logo-float: 2.8s;
   --fx-logo-glow: 1.6s;
+
+  /* Espacio reservado para que el reproductor no tape el footer (móvil) */
+  --player-reserve: 92px;
 }
 
 *{ box-sizing:border-box; }
@@ -174,7 +177,7 @@ body.intro::before{
 .player{
   position: fixed;
   right: 18px;
-  bottom: 18px;
+  bottom: calc(18px + env(safe-area-inset-bottom));
   z-index: 9999;
 
   display: grid;
@@ -258,6 +261,14 @@ body.intro::before{
   #playerClose{ grid-area: close; }
   #playerMute{ grid-area: mute; }
   #pVol{ grid-area: vol; width: 100%; }
+}
+
+/* ===== Evitar que el reproductor tape el final de la invitación (móvil) ===== */
+@media (hover: none) and (pointer: coarse){
+  /* sumamos espacio extra al padding existente del body (24px) */
+  body{
+    padding-bottom: calc(24px + var(--player-reserve) + env(safe-area-inset-bottom));
+  }
 }
 
 .poster{
@@ -464,6 +475,10 @@ body.intro::before{
   .btn{ background: rgba(255,255,255,.10); }
   .player{ background: rgba(0,0,0,.78); }
   .timeBox{ background: linear-gradient(180deg, rgba(0,0,0,.78), rgba(0,0,0,.52)); }
+
+  body{
+    padding-bottom: calc(24px + var(--player-reserve) + env(safe-area-inset-bottom));
+  }
 }
 
 

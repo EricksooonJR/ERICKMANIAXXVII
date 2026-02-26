@@ -25,6 +25,22 @@
   --font-title: "Bangers", system-ui, sans-serif;
   --font-head: "Luckiest Guy", system-ui, sans-serif;
   --font-body: "Oswald", system-ui, sans-serif;
+    /* ===== PERFORMANCE TUNING (sin perder look/animación) ===== */
+  /* Ajustes por variables: en móvil bajamos blur/blend/ritmo para que no caliente */
+  --fx-screenpyro-opacity: .55;
+  --fx-screenpyro-blur: .25px;
+  --fx-screenpyro-saturate: 1.55;
+  --fx-screenpyro-duration: 6.5s;
+
+  --fx-innerpyro-opacity: .35;
+  --fx-innerpyro-blur: .25px;
+  --fx-innerpyro-saturate: 1.55;
+  --fx-innerpyro-duration: 3.2s;
+
+  --fx-vs-duration: 2.8s;
+  --fx-cd-pulse: 1.05s;
+  --fx-logo-float: 2.8s;
+  --fx-logo-glow: 1.6s;
 }
 
 *{ box-sizing:border-box; }
@@ -93,9 +109,16 @@ body::before{
     );
 
   mix-blend-mode: screen;
-  opacity: .55;
-  filter: blur(.25px) saturate(1.55);
-  animation: screenPyro 6.5s ease-in-out infinite;
+  opacity: var(--fx-screenpyro-opacity);
+  filter: blur(var(--fx-screenpyro-blur)) saturate(var(--fx-screenpyro-saturate));
+  animation: screenPyro var(--fx-screenpyro-duration) ease-in-out infinite;
+}
+/* Evita tirones: en preload no pintamos el overlay pesado */
+body.preload::before{ opacity: 0; animation: none; }
+/* Cuando inicia la intro, lo encendemos */
+body.intro::before{
+  opacity: var(--fx-screenpyro-opacity);
+  animation: screenPyro var(--fx-screenpyro-duration) ease-in-out infinite;
 }
 
 @keyframes screenPyro{
@@ -235,6 +258,8 @@ body::before{
 
 .poster{
   position:relative;
+    /* Aísla el póster para que la entrada no fuerce repaints en toda la página */
+  contain: layout paint;
   border-radius: var(--radius);
   background:
     radial-gradient(1200px 700px at 50% 20%, rgba(255,255,255,.07), transparent 60%),
@@ -371,9 +396,10 @@ body::before{
     );
 
   mix-blend-mode: screen;
-  opacity: .35;
-  filter: blur(.25px) saturate(1.55);
-  animation: pyroPulse 3.2s ease-in-out infinite;
+ 
+    opacity: var(--fx-innerpyro-opacity);
+  filter: blur(var(--fx-innerpyro-blur)) saturate(var(--fx-innerpyro-saturate));
+    animation: pyroPulse var(--fx-innerpyro-duration) ease-in-out infinite;
 }
 
 @keyframes pyroPulse{
@@ -461,11 +487,11 @@ body::before{
     drop-shadow(0 0 18px rgba(255,0,168,.16));
 
   /* Efecto: flotación + pulso de glow */
-  animation:
-    heroLogoFloat 2.8s ease-in-out infinite,
-    heroLogoGlow 1.6s ease-in-out infinite;
+ animation:
+  heroLogoFloat var(--fx-logo-float) ease-in-out infinite,
+  heroLogoGlow  var(--fx-logo-glow) ease-in-out infinite;
 
-  will-change: transform, filter;
+  will-change: transform;
 }
 
 .hero h1{
@@ -884,8 +910,7 @@ body::before{
     0 6px 0 rgba(0,0,0,.55);
 
   /* mismo efecto de los números del countdown */
-  animation: cdPulse 1.05s ease-in-out infinite;
-}
+animation: cdPulse var(--fx-cd-pulse) ease-in-out infinite;}
 
 /* responsive */
 @media (max-width: 860px){
@@ -903,21 +928,18 @@ body::before{
 /* Estado inicial (antes de activar) */
 body.preload .poster{
   opacity: 0;
-  transform: translateY(18px) scale(.985);
-  filter: blur(6px);
+  /* Solo transform/opacity (GPU-friendly). El blur inicial causaba jank en móviles */
+  transform: translate3d(0,18px,0) scale(.985);
+  filter: none;
+ 
 }
 
 /* Cuando inicia la intro */
 body.intro .poster{
-  animation: posterIn 900ms cubic-bezier(.2,.9,.2,1) forwards;
-}
-
-/* Flash neón sin tocar tus ::before/::after existentes */
-body.intro .poster{
-  animation-name: posterIn, neonGlow;
-  animation-duration: 900ms, 900ms;
-  animation-timing-function: cubic-bezier(.2,.9,.2,1), ease-out;
-  animation-fill-mode: forwards, both;
+  /* Un solo shorthand evita sobreescrituras y reduce recalculos */
+  animation: posterIn 700ms cubic-bezier(.2,.9,.2,1) forwards,
+             neonGlowLite 520ms ease-out 80ms both;
+  will-change: transform, opacity;
 }
 
 /* Stagger: entra por partes */
@@ -926,17 +948,18 @@ body.preload .hero,
 body.preload .card,
 body.preload .footerBar{
   opacity: 0;
-  transform: translateY(10px);
+  transform: translate3d(0,10px,0);
+ 
 }
 
-body.intro .topline{ animation: itemIn 520ms ease-out 120ms forwards; }
-body.intro .hero{   animation: itemIn 520ms ease-out 220ms forwards; }
-body.intro .card{   animation: itemIn 520ms ease-out 320ms forwards; }
-body.intro .footerBar{ animation: itemIn 520ms ease-out 420ms forwards; }
+body.intro .topline{   animation: itemIn 420ms ease-out 120ms forwards; will-change: transform, opacity; }
+body.intro .hero{      animation: itemIn 420ms ease-out 320ms forwards; will-change: transform, opacity; }
+body.intro .card{      animation: itemIn 420ms ease-out 520ms forwards; will-change: transform, opacity; }
+body.intro .footerBar{ animation: itemIn 420ms ease-out 720ms forwards; will-change: transform, opacity; }
 
 /* ===== (4) VS con “IMPACT” cada pocos segundos ===== */
 .vs{
-  animation: vsImpact 2.8s ease-in-out infinite;
+animation: vsImpact var(--fx-vs-duration) ease-in-out infinite;
   transform-origin: 50% 50%;
 }
 
@@ -1011,40 +1034,40 @@ body.intro .footerBar{ animation: itemIn 520ms ease-out 420ms forwards; }
 }
 
 @keyframes posterIn{
-  0%   { opacity:0; transform: translateY(18px) scale(.985); filter: blur(6px); }
-  60%  { opacity:1; transform: translateY(-2px) scale(1.01); filter: blur(0px); }
-  100% { opacity:1; transform: translateY(0px) scale(1); filter: blur(0px); }
+  0%   { opacity:0; transform: translate3d(0,18px,0) scale(.985); }
+  65%  { opacity:1; transform: translate3d(0,-2px,0) scale(1.01); }
+  100% { opacity:1; transform: translate3d(0,0,0) scale(1); }
 }
 
 @keyframes itemIn{
-  0%   { opacity:0; transform: translateY(10px); }
-  100% { opacity:1; transform: translateY(0px); }
+  0%   { opacity:0; transform: translate3d(0,10px,0); }
+  100% { opacity:1; transform: translate3d(0,0,0); }
 }
 
-@keyframes neonGlow{
-  0% {
+@keyframes neonGlowLite{
+  0%{
     box-shadow:
       0 30px 90px rgba(0,0,0,.70),
       0 0 0 2px rgba(255,210,74,.18) inset,
       0 0 0 10px rgba(0,0,0,.65) inset,
-      0 0 34px rgba(0,229,255,.14),
-      0 0 42px rgba(255,0,168,.10);
+      0 0 28px rgba(0,229,255,.10),
+      0 0 32px rgba(255,0,168,.08);
   }
-  25% {
+  55%{
     box-shadow:
       0 30px 90px rgba(0,0,0,.70),
-      0 0 0 2px rgba(255,210,74,.22) inset,
+      0 0 0 2px rgba(255,210,74,.20) inset,
       0 0 0 10px rgba(0,0,0,.65) inset,
-      0 0 60px rgba(0,229,255,.28),
-      0 0 70px rgba(255,0,168,.22);
+      0 0 40px rgba(0,229,255,.18),
+      0 0 46px rgba(255,0,168,.14);
   }
-  100% {
+  100%{
     box-shadow:
       0 30px 90px rgba(0,0,0,.70),
       0 0 0 2px rgba(255,210,74,.18) inset,
       0 0 0 10px rgba(0,0,0,.65) inset,
-      0 0 34px rgba(0,229,255,.14),
-      0 0 42px rgba(255,0,168,.10);
+      0 0 28px rgba(0,229,255,.10),
+      0 0 32px rgba(255,0,168,.08);
   }
 }
 
@@ -1162,7 +1185,7 @@ body.intro .footerBar{ animation: itemIn 520ms ease-out 420ms forwards; }
     0 0 26px rgba(255,210,74,.25),
     0 8px 0 rgba(0,0,0,.55);
 
-  animation: cdPulse 1.05s ease-in-out infinite;
+animation: cdPulse var(--fx-cd-pulse) ease-in-out infinite;
 }
 
 .timeBox .lbl{
@@ -1325,4 +1348,40 @@ body.modalOpen{
   .toolbar{ display:none; }
   .wrap{ width:100%; }
   .poster{ box-shadow:none; }
+}
+/* ===== PERF MODE: móviles / táctil ===== */
+@media (hover: none) and (pointer: coarse){
+  :root{
+    --fx-screenpyro-opacity: .32;
+    --fx-screenpyro-blur: 0px;
+    --fx-screenpyro-saturate: 1.25;
+    --fx-screenpyro-duration: 12s;
+
+    --fx-innerpyro-opacity: .22;
+    --fx-innerpyro-blur: 0px;
+    --fx-innerpyro-saturate: 1.25;
+    --fx-innerpyro-duration: 6s;
+
+    --fx-vs-duration: 3.8s;
+    --fx-cd-pulse: 1.35s;
+    --fx-logo-float: 3.6s;
+    --fx-logo-glow: 3.2s;
+  }
+
+  /* blend modes son caros en móviles; mantenemos look pero más ligero */
+  body::before,
+  .inner::before,
+  .inner::after{
+    mix-blend-mode: normal;
+  }
+}
+
+/* Reduce-motion: además de lo que ya tienes, baja overlays pesados */
+@media (prefers-reduced-motion: reduce){
+  body::before,
+  .inner::before{
+    animation: none !important;
+    opacity: .18 !important;
+    filter: none !important;
+  }
 }

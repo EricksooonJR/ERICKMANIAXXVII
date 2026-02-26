@@ -25,7 +25,7 @@
   --font-title: "Bangers", system-ui, sans-serif;
   --font-head: "Luckiest Guy", system-ui, sans-serif;
   --font-body: "Oswald", system-ui, sans-serif;
-    /* ===== PERFORMANCE TUNING (sin perder look/animación) ===== */
+  /* ===== PERFORMANCE TUNING (sin perder look/animación) ===== */
   /* Ajustes por variables: en móvil bajamos blur/blend/ritmo para que no caliente */
   --fx-screenpyro-opacity: .55;
   --fx-screenpyro-blur: .25px;
@@ -70,6 +70,10 @@ body::before{
   inset: -60px;
   pointer-events: none;
   z-index: 0;
+
+  /* WebKit/Safari suele repintar capas fixed+blend+filter en scroll */
+  will-change: opacity, transform;
+  transform: translateZ(0);
 
   /* Mucho más cargado: anillos (explosiones) + chispas diagonales */
   background:
@@ -122,8 +126,8 @@ body.intro::before{
 }
 
 @keyframes screenPyro{
-  0%,100%{ opacity: .42; transform: translateY(0px) translateX(0px) scale(1); }
-  50%{ opacity: .70; transform: translateY(-2px) translateX(1px) scale(1.01); }
+  0%,100%{ opacity: .42; transform: translateZ(0) scale(1); }
+  50%{ opacity: .70; transform: translateZ(0) scale(1.01); }
 }
 
 .wrap{
@@ -403,8 +407,8 @@ body.intro::before{
 }
 
 @keyframes pyroPulse{
-  0%,100%{ opacity: .40; transform: translateY(0px); }
-  50%{ opacity: .70; transform: translateY(-1px); }
+  0%,100%{ opacity: .40; transform: translateZ(0) scale(1); }
+  50%{ opacity: .70; transform: translateZ(0) scale(1.005); }
 }
 
 /* ===== TEXTURA DE MÁSCARAS (fantasma, sutil) ===== */
@@ -424,9 +428,44 @@ body.intro::before{
 
   opacity: .07;
   mix-blend-mode: screen;
-  filter: blur(.2px);
+  /* Blur en texturas + scroll en Safari = jank */
+  filter: none;
   transform: rotate(-6deg) scale(1.06);
 }
+/* ===== PERF MODE: Safari / iOS (scroll suave, menos calentamiento) ===== */
+@supports (-webkit-touch-callout: none){
+  /* iOS Safari: fixed + mix-blend-mode + filter se repinta al hacer scroll */
+  body::before{
+    position: absolute;
+    inset: 0;
+    /* reduce el área de rasterizado */
+    filter: none;
+    mix-blend-mode: normal;
+    animation: screenPyro 14s ease-in-out infinite;
+  }
+
+  .inner::before,
+  .inner::after{
+    filter: none;
+    mix-blend-mode: normal;
+  }
+
+  /* Backdrop blur es carísimo en WebKit (botones, player, countdown, modal) */
+  .btn,
+  .player,
+  .timeBox,
+  .lightbox,
+  .fighter img{
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  /* A cambio, subimos un poco opacidad para mantener la estética */
+  .btn{ background: rgba(255,255,255,.10); }
+  .player{ background: rgba(0,0,0,.78); }
+  .timeBox{ background: linear-gradient(180deg, rgba(0,0,0,.78), rgba(0,0,0,.52)); }
+}
+
 
 /* Asegura que el contenido quede por encima de las texturas */
 .inner > *{ position: relative; z-index: 5; }

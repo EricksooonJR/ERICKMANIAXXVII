@@ -392,3 +392,81 @@ window.addEventListener('load', () => {
     if (e.key === 'Escape' && modal.classList.contains('open')) closeLightbox();
   });
 })();
+
+// ===== Agregar a calendario (ICS) =====
+(function setupAddToCalendar() {
+  const btn = document.getElementById('addToCalendar');
+  if (!btn) return;
+
+  // Datos del evento (ajusta si quieres)
+  const title = 'ERICKMANÍA XXVII · Fiesta de cumpleaños (Lucha Libre)';
+  const location = '4ta Privada de Juárez Norte 2455 #12, San Nicolás Tetitzintla';
+  const description = [
+    'Temática: Lucha Libre',
+    'Entrada libre · Solo trae ganas de festejar',
+    'Llegar 15 minutos antes para no perderte la entrada estelar'
+  ].join('\n');
+
+  // Fecha/hora: Sábado 6 de junio 19:00
+  // Asumimos 2026 por ser la próxima ocurrencia (si quieres otro año, lo cambio)
+  const startLocal = new Date(2026, 5, 6, 19, 0, 0); // mes 5 = junio
+  const endLocal = new Date(2026, 5, 6, 23, 0, 0);   // duración 4h (ajusta si quieres)
+
+  // Formato ICS local (sin Z) para buena compatibilidad móvil
+  const pad = (n) => String(n).padStart(2, '0');
+  const toICSLocal = (d) => (
+    d.getFullYear() +
+    pad(d.getMonth() + 1) +
+    pad(d.getDate()) +
+    'T' +
+    pad(d.getHours()) +
+    pad(d.getMinutes()) +
+    pad(d.getSeconds())
+  );
+
+  const icsEscape = (s) => String(s)
+    .replace(/\\/g, '\\\\')
+    .replace(/\n/g, '\\n')
+    .replace(/;/g, '\\;')
+    .replace(/,/g, '\\,');
+
+  btn.addEventListener('click', () => {
+    const dtstamp = new Date();
+    const uid = `erickmania-${Date.now()}@local`;
+
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//ERICKMANIA//Invitacion//ES',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      `UID:${uid}`,
+      `DTSTAMP:${toICSLocal(dtstamp)}`,
+      `SUMMARY:${icsEscape(title)}`,
+      `DESCRIPTION:${icsEscape(description)}`,
+      `LOCATION:${icsEscape(location)}`,
+      `DTSTART:${toICSLocal(startLocal)}`,
+      `DTEND:${toICSLocal(endLocal)}`,
+      'BEGIN:VALARM',
+      'TRIGGER:-PT60M',
+      'ACTION:DISPLAY',
+      'DESCRIPTION:Recordatorio: ERICKMANÍA en 1 hora',
+      'END:VALARM',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'ERICKMANIA.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+  });
+})();

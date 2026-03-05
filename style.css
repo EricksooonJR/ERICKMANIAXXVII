@@ -786,7 +786,7 @@ body.intro::before{
   border-radius: 999px;
   text-decoration:none;
   font-weight:1000;
-  letter-spacing:.6px;
+  letter-spacing:.9px;
   text-transform: uppercase;
   font-family: var(--font-head);
 
@@ -809,6 +809,13 @@ body.intro::before{
 .actionBtn:focus-visible{
   outline: 2px solid rgba(0,229,255,.55);
   outline-offset: 3px;
+}
+/* Botón Agregar al calendario — mismo estilo que MAPA */
+.actionBtn.calendar{
+  border-color: rgba(0,229,255,.40);
+  box-shadow:
+    0 10px 18px rgba(0,0,0,.22),
+    0 0 18px rgba(0,229,255,.20);
 }
 
 /* Variantes neón */

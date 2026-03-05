@@ -4,8 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>ERICKMANÍA XXVII</title>
-    <link href="img/logo.ico" rel="icon" />
-
+    <link href="/img/logo.ico" rel="icon" />
     <!-- Tipografías (puedes cambiar/añadir) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -34,7 +33,7 @@
           <section class="hero">
             <img
               class="heroLogo"
-              src="./img/logo.png"
+              src="/img/logo.png"
               alt="ERICKMANÍA XXVII"
               loading="eager"
               decoding="async"
@@ -203,7 +202,19 @@
                 </div>
                 <div class="infoRow">
                   <div class="label">Fecha</div>
-                  <div class="value">Sábado 6 de junio</div>
+                  <div class="value">
+                    <span class="valueText">Sábado 6 de junio</span>
+                    <div class="actions">
+                      <button
+                        class="actionBtn calendar"
+                        type="button"
+                        id="addToCalendar"
+                        aria-label="Agregar el evento al calendario"
+                      >
+                        📅 Agregar al calendario
+                      </button>
+                    </div>
+                  </div>
                 </div>
                 <div class="infoRow">
                   <div class="label">Mesa de regalos</div>

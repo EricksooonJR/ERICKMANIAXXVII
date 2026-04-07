@@ -1,61 +1,23 @@
 // Botones de imprimir / PNG
 const poster = document.getElementById('poster');
-const btnPrint = document.getElementById('btnPrint');
-const btnPNG = document.getElementById('btnPNG');
 
-if (btnPrint) btnPrint.addEventListener('click', () => window.print());
-
-if (btnPNG) btnPNG.addEventListener('click', async () => {
-  if (typeof html2canvas === "undefined") {
-    alert("html2canvas no cargó. Revisa que el script CDN esté antes de app.js.");
-    return;
-  }
-  if (!poster) {
-    alert("No encontré el elemento #poster en el HTML.");
-    return;
-  }
-
-  try {
-    btnPNG.disabled = true;
-    btnPNG.textContent = "⏳ Generando PNG...";
-
-    const scale = Math.min(3, window.devicePixelRatio || 2);
-
-    const canvas = await html2canvas(poster, {
-      backgroundColor: null,
-      scale,
-      useCORS: true
-    });
-
-    const a = document.createElement('a');
-    a.download = 'Cartel_LuchaLibre_Erick27.png';
-    a.href = canvas.toDataURL('image/png');
-    a.click();
-  } catch (e) {
-    alert("No se pudo generar el PNG. Intenta imprimir a PDF o recarga la página.");
-    console.error(e);
-  } finally {
-    btnPNG.disabled = false;
-    btnPNG.innerHTML = "🖼️ Descargar <small>(PNG)</small>";
-  }
-});
 
 // Definición de luchas (para llenar slots automáticamente)
 const matches = {
   estelar: {
     left: ["Galvánico", "Black Míster"],
-    right:["Caudillo", "Black Killer"]
+    right:["Caudillo", "Red Man"]
   },
   semifinal: {
-    left: ["Red Man", "Radar"],
-    right:["Blue Kiss", "Neón JR"]
+    left: ["Drakula", "Radar"],
+    right:["Tiburon", "Triton TK"]
   },
   segunda: {
-    left: ["Tritón TK"],
+    left: ["Activo"],
     right:["Driver"]
   },
   primera: {
-    left: ["Tiburón JR"],
+    left: ["Sauron"],
     right:["Valak"]
   }
 };
@@ -65,17 +27,17 @@ const fighterImages = {
   "Galvánico": "./img/galvanico.png",
   "Black Míster": "./img/mister.png",
   "Caudillo": "./img/caudillo.png",
-  "Black Killer": "./img/killer.png",
-
   "Red Man": "./img/red.png",
-  "Radar": "./img/radar.png",
-  "Blue Kiss": "./img/blue.png",
-  "Neón JR": "./img/neon.png",
 
-  "Tritón TK": "./img/triton.png",
+  "Drakula": "./img/drakula.png",
+  "Radar": "./img/radar.png",
+  "Tiburon": "./img/tiburon.png",
+  "Triton TK": "./img/triton.png",
+
+  "Activo": "./img/activo.png",
   "Driver": "./img/driver.png",
 
-  "Tiburón JR": "./img/tiburon.png",
+  "Sauron": "./img/sauron.png",
   "Valak": "./img/valak.png",
 };
 

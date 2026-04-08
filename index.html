@@ -244,14 +244,34 @@
                 <div class="infoRow">
                   <div class="label">Confirmar Asistencia por WhatsApp</div>
                   <div class="value">
-                    <div class="actions">
+                    <div
+                      class="actions"
+                      style="
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+                        max-width: 320px;
+                      "
+                    >
+                      <div class="selectWrap">
+                        <select id="numPersonas" class="whatsSelect">
+                          <option value="">
+                            Selecciona número de personas
+                          </option>
+                          <option value="1">1 persona</option>
+                          <option value="2">2 personas</option>
+                        </select>
+                      </div>
+
                       <a
                         class="actionBtn map"
-                        href="https://wa.me/522381445102?text=Hola%20Erick%20👊%20Confirmo%20mi%20asistencia%20a%20ERICKMANÍA%20XXVII%20el%206%20de%20junio"
+                        href="#"
                         target="_blank"
+                        onclick="confirmarAsistencia(event)"
                       >
                         ✅ Confirmar asistencia
                       </a>
+
                       <a
                         class="actionBtn"
                         href="https://wa.me/522381445102?text=Hola%20Erick%20👊%20Lamentablemente%20no%20podré%20asistir%20a%20ERICKMANÍA%20XXVII"
@@ -262,6 +282,27 @@
                     </div>
                   </div>
                 </div>
+
+                <script>
+                  function confirmarAsistencia(event) {
+                    event.preventDefault();
+
+                    const numPersonas =
+                      document.getElementById("numPersonas").value;
+
+                    if (!numPersonas) {
+                      alert(
+                        "Por favor, selecciona cuántas personas asistirán.",
+                      );
+                      return;
+                    }
+
+                    const mensaje = `Hola Erick 👊 Confirmo mi asistencia a ERICKMANÍA XXVII el 6 de junio.\nNúmero de personas: ${numPersonas}`;
+                    const url = `https://wa.me/522381445102?text=${encodeURIComponent(mensaje)}`;
+
+                    window.open(url, "_blank");
+                  }
+                </script>
 
                 <div class="tagline">
                   Código de vestimenta: <b>Máscara obligatoria</b>

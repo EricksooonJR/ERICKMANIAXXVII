@@ -254,13 +254,7 @@
                       "
                     >
                       <div class="selectWrap">
-                        <select id="numPersonas" class="whatsSelect">
-                          <option value="">
-                            Selecciona número de personas
-                          </option>
-                          <option value="1">1 persona</option>
-                          <option value="2">2 personas</option>
-                        </select>
+                        <select id="numPersonas" class="whatsSelect"></select>
                       </div>
 
                       <a
@@ -282,13 +276,37 @@
                     </div>
                   </div>
                 </div>
-
                 <script>
+                  document.addEventListener("DOMContentLoaded", () => {
+                    const params = new URLSearchParams(window.location.search);
+
+                    // 👉 DEFAULT = 2 personas si no hay parámetro
+                    let maxPersonas = Number(params.get("max")) || 2;
+
+                    // seguridad extra (evita cosas raras tipo ?max=100)
+                    if (maxPersonas < 1) maxPersonas = 1;
+                    if (maxPersonas > 4) maxPersonas = 4;
+
+                    const select = document.getElementById("numPersonas");
+
+                    select.innerHTML =
+                      '<option value="">Selecciona número de personas</option>';
+
+                    for (let i = 1; i <= maxPersonas; i++) {
+                      const option = document.createElement("option");
+                      option.value = i;
+                      option.textContent =
+                        i === 1 ? "1 persona" : `${i} personas`;
+                      select.appendChild(option);
+                    }
+                  });
+
+                  // 👉 botón WhatsApp
                   function confirmarAsistencia(event) {
                     event.preventDefault();
 
-                    const numPersonas =
-                      document.getElementById("numPersonas").value;
+                    const select = document.getElementById("numPersonas");
+                    const numPersonas = select.value;
 
                     if (!numPersonas) {
                       alert(
@@ -303,7 +321,6 @@
                     window.open(url, "_blank");
                   }
                 </script>
-
                 <div class="tagline">
                   Código de vestimenta: <b>Máscara obligatoria</b>
                 </div>

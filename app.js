@@ -362,7 +362,7 @@ window.addEventListener('load', () => {
 
   // Datos del evento (ajusta si quieres)
   const title = 'ERICKMANÍA XXVII · Fiesta de cumpleaños (Lucha Libre)';
-  const location = 'Salón "La Herradura" Dirección: De Lerdo 528-2da, Insurgentes, 75770 Tehuacán, Pue.';
+  const location = 'Salón "La Herradura" Dirección: 2da De Lerdo 528, Col. Insurgentes, 75770 Tehuacán, Pue.';
   const description = [
     'Temática: Lucha Libre',
     'Entrada libre · Solo trae ganas de festejar',
